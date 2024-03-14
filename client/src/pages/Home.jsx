@@ -6,6 +6,9 @@ import { LuBadgePercent } from "react-icons/lu";
 import PackageCard from "./PackageCard";
 import { useNavigate } from "react-router";
 
+import runChat from '../gemini';
+import { IoSend } from "react-icons/io5"; 
+
 const Home = () => {
   const navigate = useNavigate();
   const [topPackages, setTopPackages] = useState([]);
@@ -13,6 +16,10 @@ const Home = () => {
   const [offerPackages, setOfferPackages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
+  const [promptMessage,setPromptMessage]=useState("");
+  const [responseMessage, setResponseMessage] = useState("");
+  const [inputMessage, setInputMessage] = useState("");
+
 
   const getTopPackages = async () => {
     try {
@@ -76,10 +83,29 @@ const Home = () => {
     getLatestPackages();
     getOfferPackages();
   }, []);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (inputMessage.trim() === '') return;
+  
+    // Set the prompt message
+    setPromptMessage(inputMessage);
+  
+    try {
+      // Call the runChat function to get the response
+      const response = await runChat(inputMessage);
+      // Set the response message
+      setResponseMessage(response);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  
+    setInputMessage('');
+  };
 
   return (
     <div className="main w-full">
       <div className="w-full flex flex-col">
+        
         <div className="backaground_image w-full"></div>
         <div className="top-part w-full gap-2 flex flex-col">
           <h1 className="text-white text-4xl text-center font-bold underline mb-2">
@@ -196,10 +222,55 @@ const Home = () => {
             </>
           )}
           {/* offer */}
+          
         </div>
+        
       </div>
+
+      <div className="font-serif">
+      {/* Display response message */}
+      <div className="text-2xl font-bold text-center text-purple-800">{responseMessage}</div>
+      <form onSubmit={handleSubmit}>
+        <div className="flex items-center justify-center mt-4">
+          <input
+            type="text"
+            value={inputMessage}
+            onChange={(e) => setInputMessage(e.target.value)}
+            placeholder="Plan your journey by AI..."
+            className="border border-gray-300 rounded-full px-4 py-2 w-80 text-center"
+          />
+          <button type="submit" className="ml-2">
+            <IoSend className="text-gray-600 w-6 h-6" />
+          </button>
+        </div>
+      </form>
+    </div>
+
+
     </div>
   );
 };
 
 export default Home;
+
+
+
+
+{/* <div className="w-80 mx-auto bg-white rounded-xl shadow-lg p-6"> */}
+  {/* Display response message */}
+  // <div className="text-2xl font-bold text-center text-purple-800">{responseMessage}</div>
+  // <form onSubmit={handleSubmit}>
+    // <div className="flex items-center justify-center mt-4">
+      // <input
+        // type="text"
+        // value={inputMessage}
+        // onChange={(e) => setInputMessage(e.target.value)}
+        // placeholder="Plan your journey by AI..."
+        // className="border border-gray-300 rounded-full px-4 py-2 w-60 text-center"
+      // />
+      // <button type="submit" className="ml-2">
+        // <IoSend className="text-gray-600 w-6 h-6" />
+      // </button>
+    // </div>
+  // </form>
+// </div>
