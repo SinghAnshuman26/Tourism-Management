@@ -13,7 +13,7 @@ const Payments = () => {
     try {
       setLoading(true);
       const res = await fetch(
-        `/api/booking/get-allBookings?searchTerm=${search}`
+        `https://tourism-management-5.onrender.com/api/booking/get-allBookings?searchTerm=${search}`
       );
       const data = await res.json();
       if (data?.success) {

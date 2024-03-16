@@ -25,8 +25,9 @@ const Home = () => {
     try {
       setLoading(true);
       const res = await fetch(
-        "/api/package/get-packages?sort=packageRating&limit=8"
+        `${import.meta.env.VITE_REPLIT_URL}/api/package/get-packages?sort=packageRating&limit=8`
       );
+      // https://b6cccea2-3b3f-47dd-bea8-7704eb4cdb73-00-2w4fpqqd2pt4r.pike.replit.dev
       const data = await res.json();
       if (data?.success) {
         setTopPackages(data?.packages);
@@ -44,7 +45,7 @@ const Home = () => {
     try {
       setLoading(true);
       const res = await fetch(
-        "/api/package/get-packages?sort=createdAt&limit=8"
+        `${import.meta.env.VITE_REPLIT_URL}/api/package/get-packages?sort=createdAt&limit=8`
       );
       const data = await res.json();
       if (data?.success) {
@@ -63,7 +64,7 @@ const Home = () => {
     try {
       setLoading(true);
       const res = await fetch(
-        "/api/package/get-packages?sort=createdAt&offer=true&limit=6"
+        `${import.meta.env.VITE_REPLIT_URL}/api/package/get-packages?sort=createdAt&offer=true&limit=6`
       );
       const data = await res.json();
       if (data?.success) {
