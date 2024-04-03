@@ -1,5 +1,6 @@
 import User from "../models/user.model.js";
 import bcryptjs from "bcryptjs";
+import About from "../models/about.model.js";
 
 //update uset details
 export const updateUser = async (req, res) => {
@@ -231,6 +232,65 @@ export const promoteToAdmin = async (req, res) => {
       success: true,
       message: "User promoted to admin",
       user: userToUpdate,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+};
+// Update About page content
+export const updateAboutContent = async (req, res) => {
+  try {
+    // Check if the user is authorized to update the About page content
+    // You might want to add more stringent authorization logic here
+    // if (!req.user.isAdmin) {
+    //   return res.status(403).send({
+    //     success: false,
+    //     message: "Unauthorized: Only admins can update the About page content",
+    //   });
+    // }
+
+    const updatedAbout = await About.findOneAndUpdate(
+      {},
+      { $set: { content: req.body.content } },
+      { new: true, upsert: true }
+    );
+
+    res.status(200).send({
+      success: true,
+      message: "About page content updated successfully",
+      about: updatedAbout,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+};
+
+
+// Controller function to get the About page content
+export const getAboutContent = async (req, res) => {
+  try {
+    // Find the About document in the database
+    const about = await About.findOne();
+
+    if (!about) {
+      return res.status(404).send({
+        success: false,
+        message: "About page content not found",
+      });
+    }
+
+    // Send the About page content as a response
+    res.status(200).send({
+      success: true,
+      about: about.content,
     });
   } catch (error) {
     console.error(error);

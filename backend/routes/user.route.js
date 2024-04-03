@@ -7,6 +7,8 @@ import {
   updateUser,
   updateUserPassword,
   promoteToAdmin,
+  updateAboutContent,
+  getAboutContent,
 } from "../controllers/user.controller.js";
 import { isAdmin, requireSignIn } from "../middlewares/authMiddleware.js";
 
@@ -47,5 +49,8 @@ router.delete(
 
 //permote user 
 router.put("/promote/:id", requireSignIn, isAdmin, promoteToAdmin);
+
+router.put("/update-about-content", requireSignIn, isAdmin, updateAboutContent);
+router.get("/about-content", requireSignIn, isAdmin, getAboutContent);
 
 export default router;

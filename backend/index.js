@@ -24,12 +24,12 @@ mongoose
 app.use(express.json());
 app.use(cookieParser());
 
-app.use(cors({
-  // origin: [process.env.FRONTEND_URL],
-  origin: "*",
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true,
-}))
+// app.use(cors({
+//   // origin: [process.env.FRONTEND_URL],
+//   origin: "*",
+//   methods: ["GET", "POST", "PUT", "DELETE"],
+//   credentials: true,
+// }))
 
 app.use("/api/auth", authRoute);
 app.use("/api/user", userRoute);

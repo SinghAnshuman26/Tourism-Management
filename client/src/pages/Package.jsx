@@ -107,7 +107,7 @@ const Package = () => {
     }
     try {
       setLoading(true);
-      const res = await fetch("/api/rating/give-rating", {
+      const res = await fetch(`/api/rating/give-rating`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
