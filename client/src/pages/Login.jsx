@@ -29,7 +29,7 @@ const Login = () => {
     try {
       console.log("login start")
       dispatch(loginStart());
-      const res = await fetch(`${import.meta.env.VITE_REPLIT_URL}/api/auth/login`, {
+      const res = await fetch(`/api/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

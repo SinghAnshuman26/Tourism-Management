@@ -28,6 +28,7 @@ import AllUsers from "./AllUsers";
 import Payments from "./Payments";
 import RatingsReviews from "./RatingsReviews";
 import History from "./History";
+import AboutPageEditor from "./AboutPageEditor";
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -80,7 +81,7 @@ const AdminDashboard = () => {
         () => {
           getDownloadURL(uploadTask.snapshot.ref).then(async (downloadUrl) => {
             const res = await fetch(
-              `${import.meta.env.VITE_REPLIT_URL}/api/user/update-profile-photo/${currentUser._id}`,
+              `/api/user/update-profile-photo/${currentUser._id}`,
               {
                 method: "POST",
                 headers: {
@@ -110,9 +111,13 @@ const AdminDashboard = () => {
   };
 
   const handleLogout = async () => {
+    const CONFIRM = confirm(
+      "Are you sure ? the account will be loged out!"
+    );
+    if (CONFIRM) {
     try {
       dispatch(logOutStart());
-      const res = await fetch(`${import.meta.env.VITE_REPLIT_URL}/api/auth/logout`);
+      const res = await fetch(`/api/auth/logout`);
       const data = await res.json();
       if (data?.success !== true) {
         dispatch(logOutFailure(data?.message));
@@ -124,6 +129,7 @@ const AdminDashboard = () => {
     } catch (error) {
       console.log(error);
     }
+  }
   };
 
   const handleDeleteAccount = async (e) => {
@@ -134,7 +140,7 @@ const AdminDashboard = () => {
     if (CONFIRM) {
       try {
         dispatch(deleteUserAccountStart());
-        const res = await fetch(`${import.meta.env.VITE_REPLIT_URL}/api/user/delete/${currentUser._id}`, {
+        const res = await fetch(`/api/user/delete/${currentUser._id}`, {
           method: "DELETE",
         });
         const data = await res.json();
@@ -333,6 +339,17 @@ const AdminDashboard = () => {
                   >
                     History
                   </button>
+                
+                  <button 
+                    className={
+                      activePanelId === 9
+                        ? "p-1 rounded-t transition-all duration-300 text-nowrap bg-blue-500 text-white"
+                        : "p-1 rounded-t transition-all duration-300 text-nowrap"
+                    }
+                  
+                  onClick={() => setActivePanelId(9)}
+                  >Edit About Page
+                  </button>
                   {/* <button
                     className={
                       activePanelId === 7
@@ -363,7 +380,9 @@ const AdminDashboard = () => {
                   <History />
                 ) : activePanelId === 8 ? (
                   <AdminUpdateProfile />
-                ) : (
+                ) : activePanelId === 9 ? (
+                  <AboutPageEditor />
+                ) :(
                   <div>Page Not Found!</div>
                 )}
               </div>

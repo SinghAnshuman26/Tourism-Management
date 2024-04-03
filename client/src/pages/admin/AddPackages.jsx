@@ -135,7 +135,7 @@ const AddPackages = () => {
       setLoading(true);
       setError(false);
 
-      const res = await fetch(`${import.meta.env.VITE_REPLIT_URL}/api/package/create-package`, {
+      const res = await fetch(`/api/package/create-package`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
